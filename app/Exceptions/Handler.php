@@ -2,7 +2,12 @@
 
 namespace App\Exceptions;
 
+use App\GamesRequestsDirectory\Responses\JsonResponse;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -22,7 +27,9 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+        AuthenticationException::class,
+        NotFoundHttpException::class,
+        TokenMismatchException::class,
     ];
 
     /**
@@ -35,6 +42,14 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
+    public function report(Throwable $e): void
+    {
+        if (app()->runningUnitTests()) {
+            return;
+        }
+
+        parent::report($e);
+    }
 
     /**
      * Register the exception handling callbacks for the application.
@@ -43,8 +58,17 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
+        //$this->reportable(function (Throwable $e) {
             //
-        });
+       // });
+    }
+    protected function prepareJsonResponse($request, Throwable $e): JsonResponse|\Illuminate\Http\JsonResponse
+    {
+        return JsonResponse::exception($e);
+    }
+
+    protected function invalidJson($request, ValidationException $exception): JsonResponse|\Illuminate\Http\JsonResponse
+    {
+        return JsonResponse::exception($exception);
     }
 }
