@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\GamesRequestsDirectory\Requests;
 
@@ -12,7 +13,7 @@ class CreateRequest extends FormRequest
 
     public function rules(): array
     {
-        return[
+        return [
             'name' => ['required', 'min:2', 'max:255', 'string', 'unique:App\GamesRequestsDirectory\Models\GameProperty,name'],
             'developer' => ['required', 'min:2', 'max:255', 'string'],
             'genre' => ['required', 'string', Rule::in(Genre::values())],

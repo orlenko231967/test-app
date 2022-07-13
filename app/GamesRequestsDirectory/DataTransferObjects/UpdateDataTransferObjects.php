@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\GamesRequestsDirectory\DataTransferObjects;
 
@@ -12,12 +13,12 @@ class UpdateDataTransferObjects extends DataTransferObject
 
     public readonly ?string $developer;
 
-    public readonly  ?Genre $genre;
+    public readonly ?Genre $genre;
 
     public static function fromRequest(UpdateRequest $request): self
     {
         $data = $request->validated();
-        if(array_key_exists('genre', $data)){
+        if (array_key_exists('genre', $data)) {
             $data['genre'] = Genre::from($data['genre']);
         }
         return new self($data);

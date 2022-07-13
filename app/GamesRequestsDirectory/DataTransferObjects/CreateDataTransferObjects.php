@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\GamesRequestsDirectory\DataTransferObjects;
 
@@ -12,7 +13,7 @@ class CreateDataTransferObjects extends DataTransferObject
 
     public readonly string $developer;
 
-    public readonly  Genre $genre;
+    public readonly Genre $genre;
 
     public static function fromRequest(CreateRequest $request): self
     {

@@ -1,10 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace App\GamesRequestsDirectory\Models;
 
 use App\GamesRequestsDirectory\Enums\Genre;
 use Carbon\Carbon;
+use Database\Factories\GamesPropertyFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,10 +17,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property Genre $genre
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @method Builder|self  $ofGenres()
+ * @method static Builder|self  $ofGenres()
+ * @method static GamesPropertyFactory factory(...$parameters)
  */
 class GameProperty extends Model
 {
+    use HasFactory;
+
     protected $table = 'games';
 
     protected $casts = [
@@ -37,6 +43,11 @@ class GameProperty extends Model
     public function scopeOfGenres(Builder $query, Genre $genre)
     {
         return $query->where('genre', $genre);
+    }
+
+    protected static function newFactory(): GamesPropertyFactory
+    {
+        return GamesPropertyFactory::new();
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\GamesRequestsDirectory\Responses;
 
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\JsonResponse as Base;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;

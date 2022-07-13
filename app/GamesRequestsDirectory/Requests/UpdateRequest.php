@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\GamesRequestsDirectory\Requests;
 
@@ -12,11 +13,10 @@ class UpdateRequest extends FormRequest
 
     public function rules(): array
     {
-        return[
+        return [
             'name' => ['sometimes', 'min:2', 'max:255', 'string', Rule::unique('games')->ignore($this->route('game'))],
             'developer' => ['sometimes', 'min:2', 'max:255', 'string'],
             'genre' => ['sometimes', 'string', Rule::in(Genre::values())],
         ];
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use App\GamesRequestsDirectory\Controllers\GamePrepareController;
 use App\GamesRequestsDirectory\Enums\Genre;
@@ -19,11 +20,13 @@ use Illuminate\Support\Facades\Route;
    // return $request->user();
 //});
 
-Route::controller(GamePrepareController::class)->group(function (){
-    Route::get('/games', 'getAll');
-    Route::post('/game', 'create');
-    Route::get('/game/{game}', 'getOne')->where(['game' => '[0-9]+']);
-    Route::put('/game/{game}', 'update')->where(['game' => '[0-9]+']);
-    Route::delete('/game/{game}', 'delete')->where(['game' => '[0-9]+']);
-    Route::get('/game-genre/{genre}', 'getGenre')->whereIn('genre', Genre::values());
+Route::controller(GamePrepareController::class)
+    ->as('api.v1.')
+    ->group(function (){
+    Route::get('/games', 'getAll')->name('show');
+    Route::post('/game', 'create')->name('create');
+    Route::get('/game/{game}', 'getOne')->where(['game' => '[0-9]+'])->name('show_one');
+    Route::put('/game/{game}', 'update')->where(['game' => '[0-9]+'])->name('update');
+    Route::delete('/game/{game}', 'delete')->where(['game' => '[0-9]+'])->name('delete');
+    Route::get('/{genre}/games', 'getGenre')->whereIn('genre', Genre::values())->name('genre');
 });
